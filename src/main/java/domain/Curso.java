@@ -1,16 +1,35 @@
 package domain;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.List;
 
+
+@Entity
+@Table(name = "curso")
 public class Curso implements BaseEntity<Long> {
+	@Id
 	private Long id;
-
+	
+	@Column(name = "codigo", nullable = false)
 	private String codigo;
-
+	
+	@Column(name = "nombre", length = 128, nullable = false)
 	private String nombre;
-
+	
+	@Column(name = "creditos", length = 128, nullable = false)
 	private Integer creditos;
 
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "prerequisito",
+		joinColumns = @JoinColumn(name = "curso_codigo", referencedColumnName = "codigo"),
+		inverseJoinColumns = @JoinColumn(name = "prerequisito_codigo",
+			referencedColumnName = "codigo"))
 	private List<Curso> prerequisitos;
 
 	@Override
